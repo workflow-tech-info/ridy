@@ -204,6 +204,8 @@ export function Home() {
                    <p className="text-white/90">{"{"}</p>
                    <p className="text-white/90 ml-8">"pickup": <span className="text-savaari-green">"Kochi Airport"</span>,</p>
                    <p className="text-white/90 ml-8">"drop": <span className="text-savaari-green">"Kakkanad"</span>,</p>
+                   <p className="text-white/90 ml-8">"user_phone": <span className="text-savaari-green">"+91 8086477654"</span>,</p>
+                   <p className="text-white/90 ml-8">"fare": <span className="text-savaari-accent">"Dynamic (Est. ₹450)"</span>,</p>
                    <p className="text-white/90 ml-8">"vehicleType": <span className="text-savaari-green">"Auto"</span></p>
                    <p className="text-white/90">{"}"}</p>
                 </div>
@@ -290,15 +292,12 @@ export function Home() {
                 </p>
               </div>
             </div>
-            <p className="mt-24 text-4xl font-black text-savaari-accent tracking-[0.05em] uppercase italic animate-pulse">One network. Many providers. More availability.</p>
+
           </div>
         </div>
       </section>
       
-      {/* FINAL BONUS OVERRIDE */}
-      <div className="bg-savaari-accent text-[#0B0B0C] py-12 text-center text-3xl font-black tracking-tighter uppercase italic">
-        One network. Many providers. Built for the future of Indian mobility.
-      </div>
+
       
       <Footer />
     </div>
