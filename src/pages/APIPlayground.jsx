@@ -17,7 +17,7 @@ export function APIPlayground() {
     pickup: "Kochi Airport, CIAL",
     drop: "Kakanad IT Park",
     vehicleType: "Auto",
-    customerPhone: "+919999999999"
+    customerPhone: "+918086477654"
   });
 
   const endpoints = [
