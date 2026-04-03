@@ -45,7 +45,7 @@ export function Home() {
                 <PhoneCall size={24} className="fill-current" />
                 <span className="text-xl tracking-tight">Get Ride Now</span>
               </a>
-              <Link to="/api-playground" className="group px-10 py-6 w-full sm:w-auto flex items-center justify-center gap-3 bg-white/5 text-white font-bold rounded-full border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all">
+              <Link to="/api-docs" className="group px-10 py-6 w-full sm:w-auto flex items-center justify-center gap-3 bg-white/5 text-white font-bold rounded-full border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all">
                 <Zap size={20} className="text-savaari-accent" />
                 <span>Try the API</span>
               </Link>
@@ -218,7 +218,7 @@ export function Home() {
                 Developers can integrate ride booking directly into their apps, websites, or systems using our simple, powerful REST APIs.
               </p>
               <div className="flex gap-6">
-                <Link to="/api-playground" className="px-12 py-6 bg-savaari-accent text-primary font-black rounded-full hover:shadow-[0_0_50px_rgba(0,240,255,0.4)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+                <Link to="/api-docs" className="px-12 py-6 bg-savaari-accent text-primary font-black rounded-full hover:shadow-[0_0_50px_rgba(0,240,255,0.4)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
                    <Zap size={20} /> Try API Playground
                 </Link>
               </div>
