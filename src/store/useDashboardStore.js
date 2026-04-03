@@ -1,54 +1,34 @@
 import { create } from 'zustand';
 import api from '../lib/api';
+import { mockDrivers, mockBookings, mockTransactions, mockTickets, mockLiveCalls, mockStats } from '../lib/mockData';
 
 export const useDashboardStore = create((set, get) => ({
-  activeDrivers: [],
-  liveCalls: [],
-  bookings: [],
-  transactions: [],
-  tickets: [],
-  stats: {
-    ridesToday: 0,
-    revenue: "₹0",
-    activeRideCount: 0,
-    availableDrivers: 0,
-    trends: { rides: [], revenue: [] }
-  },
+  activeDrivers: mockDrivers,
+  liveCalls: mockLiveCalls,
+  bookings: mockBookings,
+  transactions: mockTransactions,
+  tickets: mockTickets,
+  stats: mockStats,
   
   loading: false,
   error: null,
 
-  // Initial Fetch
+  // Initial Fetch (Now Instant)
   fetchDashboardData: async () => {
+    // We already initialized with mock data, so this just serves as a fast sync point
     set({ loading: true });
-    try {
-      const [drivers, calls, bookings, transactions, tickets, analytics] = await Promise.all([
-        api.getDrivers(),
-        api.getCalls(),
-        api.getBookings(),
-        api.getTransactions(),
-        api.getTickets(),
-        api.getAnalytics()
-      ]);
-      
+    // Simulate a tiny network latency for a 'Pro' feel (optional, but keeping it ultra fast)
+    setTimeout(() => {
       set({ 
-        activeDrivers: drivers, 
-        liveCalls: calls, 
-        bookings, 
-        transactions, 
-        tickets, 
-        stats: {
-          ridesToday: analytics.ridesToday,
-          revenue: analytics.revenue,
-          activeRideCount: analytics.activeRides,
-          availableDrivers: analytics.availableDrivers,
-          trends: analytics.trends
-        },
+        activeDrivers: mockDrivers, 
+        liveCalls: mockLiveCalls, 
+        bookings: mockBookings, 
+        transactions: mockTransactions, 
+        tickets: mockTickets, 
+        stats: mockStats,
         loading: false 
       });
-    } catch (error) {
-      set({ error: error.message, loading: false });
-    }
+    }, 100);
   },
 
   // Call Flow State (UI Only)
