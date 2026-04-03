@@ -6,6 +6,7 @@ import {
   AreaChart, Area, LineChart, Line, Cell
 } from 'recharts';
 import { TrendingUp, Users, Calendar, Clock, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { cn } from "../../lib/utils";
 
 export function Analytics() {
   const { stats, fetchDashboardData } = useDashboardStore();
