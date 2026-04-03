@@ -40,13 +40,13 @@ export function Navigation() {
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map(link => (
-            <a 
+            <Link 
               key={link.name}
-              href={link.href} 
+              to={link.href} 
               className={`text-sm font-bold transition-all hover:text-white ${link.accent ? 'text-savaari-accent' : 'text-savaari-gray'}`}
             >
               {link.name}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -70,14 +70,14 @@ export function Navigation() {
       {isMenuOpen && (
         <div className="lg:hidden absolute top-full left-0 right-0 bg-[#0B0B0C] border-b border-white/10 p-6 space-y-6 flex flex-col animate-in fade-in slide-in-from-top-4 duration-300">
            {navLinks.map(link => (
-            <a 
+            <Link 
               key={link.name}
-              href={link.href} 
+              to={link.href} 
               onClick={() => setIsMenuOpen(false)}
               className={`text-lg font-bold transition-all border-b border-white/5 pb-2 ${link.accent ? 'text-savaari-accent' : 'text-white'}`}
             >
               {link.name}
-            </a>
+            </Link>
           ))}
           <PrimaryButton variant="accent" className="w-full flex items-center justify-center gap-2 py-4">
             <PhoneCall size={20} />

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, PhoneCall, CalendarPlus, Users, Car, Settings, LogOut, ChartNoAxesCombined } from "lucide-react";
+import { LayoutDashboard, PhoneCall, CalendarPlus, Users, Car, Settings, LogOut, ChartNoAxesCombined, Menu, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 const navigation = [
@@ -16,6 +16,7 @@ const navigation = [
 
 export function DashboardLayout({ children }) {
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   return (
     <div className="min-h-screen bg-savaari-dark flex text-white relative">
@@ -70,17 +71,28 @@ export function DashboardLayout({ children }) {
       {/* Main Content Area */}
       <main className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
         {/* Top Header / Nav */}
-        <header className="h-16 border-b border-savaari-border bg-primary/80 backdrop-blur-md sticky top-0 z-40 flex items-center justify-between px-8">
-           <h1 className="text-lg font-semibold tracking-tight text-white/90">
-             {navigation.find(n => n.href === location.pathname)?.name || 'Dashboard'}
-           </h1>
+        <header className="h-16 border-b border-savaari-border bg-primary/80 backdrop-blur-md sticky top-0 z-40 flex items-center justify-between px-6 md:px-8">
+           <div className="flex items-center gap-4">
+              {/* Mobile Menu Toggle */}
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 text-savaari-gray hover:text-white transition-colors"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+              <h1 className="text-lg font-bold tracking-tight text-white/90">
+                {navigation.find(n => n.href === location.pathname)?.name || 'Dashboard'}
+              </h1>
+           </div>
+           
            <div className="flex items-center gap-4 text-sm font-medium">
-              <div className="flex items-center gap-2 bg-[#1c1c1e] px-3 py-1.5 rounded-full border border-white/5">
+              <div className="hidden sm:flex items-center gap-2 bg-[#1c1c1e] px-3 py-1.5 rounded-full border border-white/5">
                 <span className="w-2 h-2 rounded-full bg-savaari-green animate-pulse"></span>
-                <span className="text-savaari-gray text-xs">System Online</span>
+                <span className="text-savaari-gray text-xs">Live</span>
               </div>
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-savaari-accent to-savaari-green flex items-center justify-center ml-2 border border-white/10 shadow-sm cursor-pointer">
-                 <span className="text-black text-xs font-bold">AK</span>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-savaari-accent to-savaari-green flex items-center justify-center border border-white/10 shadow-sm cursor-pointer">
+                 <span className="text-black text-[10px] font-black uppercase">AK</span>
               </div>
            </div>
         </header>
@@ -94,6 +106,64 @@ export function DashboardLayout({ children }) {
            </div>
         </div>
       </main>
+
+      {/* Mobile Navigation Drawer Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <div 
+            className="absolute top-0 left-0 bottom-0 w-72 bg-[#0B0B0C] border-r border-white/10 p-6 flex flex-col animate-in slide-in-from-left duration-300 shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-8">
+               <Link to="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                  <div className="w-8 h-8 rounded-full bg-savaari-accent flex items-center justify-center">
+                    <span className="text-primary font-bold text-lg">R</span>
+                  </div>
+                  <span className="text-white font-bold text-xl tracking-tight">Ridy</span>
+                </Link>
+                <button onClick={() => setIsMobileMenuOpen(false)} className="text-savaari-gray">
+                  <X size={20} />
+                </button>
+            </div>
+
+            <div className="mt-2 text-[10px] text-savaari-gray font-black uppercase tracking-[0.2em] mb-6">Console Menu</div>
+
+            <nav className="flex-1 space-y-2">
+              {navigation.map((item) => {
+                const isActive = location.pathname === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "flex items-center gap-4 px-4 py-3.5 text-base font-bold rounded-2xl transition-all duration-200",
+                      isActive 
+                        ? "bg-savaari-accent/10 text-savaari-accent border border-savaari-accent/20" 
+                        : "text-savaari-gray hover:text-white"
+                    )}
+                  >
+                    <item.icon size={22} className={isActive ? "text-savaari-accent" : "text-savaari-gray"} />
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="pt-6 border-t border-white/10 mt-auto">
+               <Link to="/dashboard/settings" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 px-4 py-3 text-savaari-gray font-bold">
+                  <Settings size={20} /> Settings
+               </Link>
+               <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 px-4 py-3 text-red-500 font-bold mt-2">
+                  <LogOut size={20} /> Logout
+               </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
