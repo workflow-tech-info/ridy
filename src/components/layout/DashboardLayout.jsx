@@ -9,6 +9,8 @@ const navigation = [
   { name: 'Bookings', href: '/dashboard/bookings', icon: CalendarPlus },
   { name: 'Dispatch', href: '/dashboard/dispatch', icon: Car },
   { name: 'Drivers', href: '/dashboard/drivers', icon: Users },
+  { name: 'Transactions', href: '/dashboard/transactions', icon: ChartNoAxesCombined },
+  { name: 'Support', href: '/dashboard/support', icon: Users },
   { name: 'Analytics', href: '/dashboard/analytics', icon: ChartNoAxesCombined },
 ];
 

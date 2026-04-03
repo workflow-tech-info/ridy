@@ -38,7 +38,16 @@ export function LiveCalls() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white tracking-tight">{call.phone}</h3>
-                    <div className="flex items-center gap-3 mt-1">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
+                      <span className="text-xs text-savaari-gray flex items-center gap-1">
+                        <span className={`w-1.5 h-1.5 rounded-full ${call.status === 'Ringing' ? 'bg-savaari-accent animate-pulse' : (call.status === 'Connected' ? 'bg-savaari-green' : 'bg-red-400')}`}></span>
+                        {call.status}
+                      </span>
+                      <span className="text-xs text-savaari-gray">•</span>
+                      <span className="text-xs text-savaari-gray">{call.duration}</span>
+                      <span className="text-xs text-savaari-gray">•</span>
+                      <span className="text-xs text-savaari-accent font-medium">{call.language}</span>
+                      <span className="text-xs text-savaari-gray">•</span>
                       <span className="text-xs text-savaari-gray">{call.location}</span>
                       <span className="text-xs text-savaari-gray">•</span>
                       <span className="text-xs text-savaari-gray">{call.time}</span>

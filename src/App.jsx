@@ -10,6 +10,9 @@ import { Bookings } from './pages/Dashboard/Bookings'
 import { Drivers } from './pages/Dashboard/Drivers'
 import { Analytics } from './pages/Dashboard/Analytics'
 import { Dispatch } from './pages/Dashboard/Dispatch'
+import { Transactions } from './pages/Dashboard/Transactions'
+import { Support } from './pages/Dashboard/Support'
+import { Settings } from './pages/Dashboard/Settings'
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
         <Route path="/dashboard/drivers" element={<DashboardLayout><Drivers /></DashboardLayout>} />
         <Route path="/dashboard/dispatch" element={<DashboardLayout><Dispatch /></DashboardLayout>} />
         <Route path="/dashboard/analytics" element={<DashboardLayout><Analytics /></DashboardLayout>} />
+        <Route path="/dashboard/transactions" element={<DashboardLayout><Transactions /></DashboardLayout>} />
+        <Route path="/dashboard/support" element={<DashboardLayout><Support /></DashboardLayout>} />
+        <Route path="/dashboard/settings" element={<DashboardLayout><Settings /></DashboardLayout>} />
       </Routes>
     </Router>
   )

@@ -2,69 +2,78 @@ import React, { useState } from 'react';
 import { Navigation } from '../components/ui/Navigation';
 import { Footer } from '../components/ui/Footer';
 import { GlassCard } from '../components/ui/GlassCard';
-import { Play, Copy, CheckCircle2, ChevronRight, Terminal } from 'lucide-react';
+import { Play, Copy, CheckCircle2, Terminal, Send, Code, Database, Zap } from 'lucide-react';
 import { PrimaryButton } from '../components/ui/PrimaryButton';
 import { cn } from '../lib/utils';
+import api from '../lib/api';
 
 export function APIPlayground() {
   const [copied, setCopied] = useState(false);
   const [running, setRunning] = useState(false);
   const [response, setResponse] = useState(null);
   const [activeTab, setActiveTab] = useState('nodejs');
+  const [activeEndpoint, setActiveEndpoint] = useState('POST /v1/dispatch');
+  const [formData, setFormData] = useState({
+    pickup: "Kochi Airport, CIAL",
+    drop: "Kakanad IT Park",
+    vehicleType: "Auto",
+    customerPhone: "+919999999999"
+  });
 
-  const codeSnippets = {
-    nodejs: `const fetch = require('node-fetch');
+  const endpoints = [
+    { method: 'POST', path: '/v1/dispatch', description: 'Create a new ride request and start driver pooling.' },
+    { method: 'POST', path: '/dispatch/accept', description: 'Manually accept a ride request on behalf of a driver.' },
+    { method: 'GET', path: '/bookings', description: 'Retrieve a list of all recent ride bookings.' },
+    { method: 'GET', path: '/drivers', description: 'Fetch all registered drivers in the host network.' },
+    { method: 'POST', path: '/webhook/missed-call', description: 'Simulate an incoming missed call event.' },
+    { method: 'GET', path: '/analytics/summary', description: 'Get high-level operational metrics.' }
+  ];
 
-async function createBooking() {
-  const response = await fetch('https://api.ridy.io/v1/dispatch', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer YOUR_API_KEY',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      pickup: "Kochi Airport, CIAL",
-      drop: "Kakanad IT Park",
-      vehicleType: "Auto",
-      customerPhone: "+919999999999"
-    })
+  const handleRun = async () => {
+    setRunning(true);
+    setResponse(null);
+    try {
+      let res;
+      if (activeEndpoint === 'POST /v1/dispatch') {
+        res = await api.createBooking(formData);
+      } else if (activeEndpoint === 'POST /dispatch/accept') {
+        res = await api.acceptBooking({ bookingId: 'ridy_1001', driverId: 'd1' });
+      } else if (activeEndpoint === 'GET /bookings') {
+        res = await api.getBookings();
+      } else if (activeEndpoint === 'GET /drivers') {
+        res = await api.getDrivers();
+      } else if (activeEndpoint === 'POST /webhook/missed-call') {
+        res = await api.simulateMissedCall(formData.customerPhone);
+      } else if (activeEndpoint === 'GET /analytics/summary') {
+        res = await api.getAnalytics();
+      }
+      setResponse(res);
+    } catch (err) {
+      setResponse({ error: err.message });
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  const getCodeSnippet = () => {
+    if (activeTab === 'curl') {
+      return `curl -X ${activeEndpoint.split(' ')[0]} http://localhost:3001${activeEndpoint.split(' ')[1]} \\
+  -H "Content-Type: application/json" \\
+  -d '${JSON.stringify(formData, null, 2)}'`;
+    }
+    return `const fetch = require('node-fetch');
+
+async function runRequest() {
+  const response = await fetch('http://localhost:3001${activeEndpoint.split(' ')[1]}', {
+    method: '${activeEndpoint.split(' ')[0]}',
+    headers: { 'Content-Type': 'application/json' },
+    body: ${activeEndpoint.startsWith('GET') ? 'null' : `JSON.stringify(${JSON.stringify(formData, null, 2)})`}
   });
   
   return response.json();
 }
 
-createBooking().then(console.log);`,
-    curl: `curl -X POST https://api.ridy.io/v1/dispatch \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "pickup": "Kochi Airport, CIAL",
-    "drop": "Kakanad IT Park",
-    "vehicleType": "Auto",
-    "customerPhone": "+919999999999"
-  }'`
-  };
-
-  const codeStr = codeSnippets[activeTab];
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(codeStr);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleRun = () => {
-    setRunning(true);
-    setResponse(null);
-    setTimeout(() => {
-      setResponse({
-         id: "rc_8a7f9q2",
-         status: "dispatching",
-         estimated_eta_mins: 3,
-         message: "Pooling nearby drivers..."
-      });
-      setRunning(false);
-    }, 1200);
+runRequest().then(console.log);`;
   };
 
   return (
@@ -73,104 +82,125 @@ createBooking().then(console.log);`,
 
       <main className="pt-32 pb-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          
           <div className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">Developer API</h1>
+            <h1 className="text-5xl font-bold tracking-tight text-white mb-4">Developer Playground</h1>
             <p className="text-savaari-gray text-lg max-w-2xl">
-              Integrate the Ridy open mobility protocol directly into your backend. Test our REST endpoints live using the sandbox below.
+              The Ridy REST API sandbox. Test endpoints live against the local mock backend and explore the protocol.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-             {/* Documentation Side */}
-             <div className="space-y-8">
-                <GlassCard hoverEffect={false} className="p-8 bg-[#121214]">
-                   <div className="flex items-center gap-3 mb-4">
-                     <span className="bg-savaari-accent/20 text-savaari-accent font-mono px-2 py-1 rounded text-xs font-bold border border-savaari-accent/30">POST</span>
-                     <h3 className="text-xl font-bold text-white">/v1/dispatch</h3>
-                   </div>
-                   <p className="text-savaari-gray text-sm leading-relaxed mb-6">Create a priority dispatch request. Our system will immediately ping the closest available driver in our open network and route them to the pickup coordinates.</p>
-                   
-                   <h4 className="text-white font-medium text-sm mb-3 border-b border-white/5 pb-2">Body Parameters</h4>
-                   <ul className="space-y-3">
-                     <li className="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center text-sm">
-                       <span className="font-mono text-savaari-accent min-w-[120px]">pickup</span>
-                       <span className="text-savaari-gray">string (required) - Address or lat/lng.</span>
-                     </li>
-                     <li className="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center text-sm">
-                       <span className="font-mono text-savaari-accent min-w-[120px]">drop</span>
-                       <span className="text-savaari-gray">string (required) - Destination address.</span>
-                     </li>
-                     <li className="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center text-sm">
-                       <span className="font-mono text-savaari-accent min-w-[120px]">vehicleType</span>
-                       <span className="text-savaari-gray">string - 'Auto' | 'Sedan' | 'SUV'</span>
-                     </li>
-                   </ul>
-                </GlassCard>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Sidebar: Endpoints */}
+            <div className="lg:col-span-4 space-y-3">
+              <h3 className="text-xs font-bold text-savaari-gray uppercase tracking-widest px-2 mb-4">Endpoints</h3>
+              {endpoints.map((ep) => {
+                const fullId = `${ep.method} ${ep.path}`;
+                const isActive = activeEndpoint === fullId;
+                return (
+                  <button 
+                    key={fullId}
+                    onClick={() => setActiveEndpoint(fullId)}
+                    className={cn(
+                      "w-full text-left p-4 rounded-2xl border transition-all group",
+                      isActive 
+                        ? "bg-savaari-accent/10 border-savaari-accent/30 shadow-lg shadow-savaari-accent/5" 
+                        : "bg-[#121214] border-white/5 hover:border-white/20"
+                    )}
+                  >
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className={cn(
+                        "text-[10px] font-bold px-1.5 py-0.5 rounded border",
+                        ep.method === 'POST' ? 'bg-savaari-accent/20 text-savaari-accent border-savaari-accent/20' : 'bg-savaari-green/20 text-savaari-green border-savaari-green/20'
+                      )}>{ep.method}</span>
+                      <span className="text-sm font-mono text-white group-hover:text-savaari-accent transition-colors">{ep.path}</span>
+                    </div>
+                    <p className="text-xs text-savaari-gray line-clamp-1">{ep.description}</p>
+                  </button>
+                );
+              })}
+            </div>
 
-                <GlassCard hoverEffect={false} className="p-8 bg-[#121214] opacity-70">
-                   <div className="flex items-center gap-3 mb-4">
-                     <span className="bg-savaari-green/20 text-savaari-green font-mono px-2 py-1 rounded text-xs font-bold border border-savaari-green/30">WEBHOOK</span>
-                     <h3 className="text-xl font-bold text-white">/webhook/missed-call</h3>
-                   </div>
-                   <p className="text-savaari-gray text-sm leading-relaxed">Register a webhook URL to receive instant push alerts whenever a customer gives a missed call to your dedicated business line.</p>
-                   <div className="flex items-center gap-3 mb-4 mt-8">
-                     <span className="bg-savaari-green/20 text-savaari-green font-mono px-2 py-1 rounded text-xs font-bold border border-savaari-green/30">POST</span>
-                     <h3 className="text-xl font-bold text-white">/dispatch/accept</h3>
-                   </div>
-                   
-                   <div className="flex items-center gap-3 mb-4 mt-8">
-                     <span className="bg-savaari-accent/20 text-savaari-accent font-mono px-2 py-1 rounded text-xs font-bold border border-savaari-accent/30">POST</span>
-                     <h3 className="text-xl font-bold text-white">/provider/register</h3>
-                   </div>
-                </GlassCard>
-             </div>
-
-             {/* Playground Code Side */}
-             <div className="h-full flex flex-col">
-                <div className="bg-[#1c1c1e] border border-white/10 rounded-t-2xl flex items-center justify-between px-4 py-3">
-                   <div className="flex items-center gap-4">
-                      <Terminal size={18} className="text-savaari-gray" />
-                      <div className="flex gap-2">
-                        <button onClick={() => setActiveTab('nodejs')} className={cn("text-xs font-medium px-3 py-1.5 rounded-md transition-colors", activeTab === 'nodejs' ? "bg-white/10 text-white" : "text-savaari-gray hover:text-white")}>Node.js</button>
-                        <button onClick={() => setActiveTab('curl')} className={cn("text-xs font-medium px-3 py-1.5 rounded-md transition-colors", activeTab === 'curl' ? "bg-white/10 text-white" : "text-savaari-gray hover:text-white")}>cURL</button>
+            {/* Main Playground */}
+            <div className="lg:col-span-8 flex flex-col gap-6">
+              <GlassCard className="p-8 bg-[#121214]/50 border-white/5">
+                <div className="flex items-center justify-between mb-8">
+                   <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-xl bg-savaari-accent/10 text-savaari-accent">
+                         <Zap size={20} />
                       </div>
+                      <h3 className="text-xl font-bold text-white">Execute Request</h3>
                    </div>
-                   <button onClick={handleCopy} className="text-savaari-gray hover:text-white transition-colors" title="Copy to clipboard">
-                     {copied ? <CheckCircle2 size={18} className="text-savaari-green" /> : <Copy size={18} />}
-                   </button>
-                </div>
-                
-                <div className="bg-[#0B0B0C] border-x border-b border-white/10 relative p-6 font-mono text-sm overflow-x-auto min-h-[300px]">
-                  <pre className="text-[#a9b1d6]">
-                     <code dangerouslySetInnerHTML={{__html: codeStr.replace(/(".*?")/g, '<span class="text-[#9ece6a]">$1</span>').replace(/(fetch|const|async|function|await|return)/g, '<span class="text-[#bb9af7]">$1</span>')}} />
-                  </pre>
+                   <div className="flex items-center gap-2">
+                      <button onClick={() => setActiveTab('nodejs')} className={cn("px-4 py-1.5 rounded-lg text-xs font-bold", activeTab === 'nodejs' ? "bg-white/10 text-white" : "text-savaari-gray")}>Node.js</button>
+                      <button onClick={() => setActiveTab('curl')} className={cn("px-4 py-1.5 rounded-lg text-xs font-bold", activeTab === 'curl' ? "bg-white/10 text-white" : "text-savaari-gray")}>cURL</button>
+                   </div>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between gap-4">
-                   <PrimaryButton variant="accent" className="flex items-center gap-2 py-2.5 px-6 shrink-0" onClick={handleRun} disabled={running}>
-                      {running ? <div className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin" /> : <Play size={16} className="fill-current" />}
-                      {running ? 'Executing...' : 'Run Request'}
-                   </PrimaryButton>
-                   <div className="text-xs text-savaari-gray hidden sm:block">Calls are routed through our sandbox testing environment.</div>
-                </div>
-
-                {/* Mock Response Box */}
-                {(running || response) && (
-                  <div className="mt-6">
-                    <h4 className="text-white text-xs font-bold uppercase tracking-wider mb-2">Response Payload</h4>
-                    <div className="bg-[#1c1c1e] rounded-xl border border-savaari-accent/30 p-4 font-mono text-sm text-[#9ece6a] min-h-[100px] shadow-[0_0_20px_rgba(0,240,255,0.1)]">
-                      {running ? (
-                        <div className="flex items-center gap-2 text-savaari-accent">
-                          <span className="w-2 h-2 rounded-full bg-savaari-accent animate-ping"></span> Awaiting response...
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                   {/* Input Section */}
+                   <div className="space-y-6">
+                      <h4 className="text-xs font-bold text-savaari-gray uppercase tracking-widest border-b border-white/5 pb-2">Request Body</h4>
+                      {activeEndpoint.startsWith('POST') ? (
+                        <div className="space-y-4">
+                           {Object.keys(formData).map(key => (
+                              <div key={key} className="space-y-1.5">
+                                 <label className="text-[10px] font-mono text-savaari-accent uppercase">{key}</label>
+                                 <input 
+                                   type="text" 
+                                   value={formData[key]} 
+                                   onChange={(e) => setFormData({...formData, [key]: e.target.value})}
+                                   className="w-full bg-[#1c1c1e] border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-savaari-accent"
+                                 />
+                              </div>
+                           ))}
                         </div>
                       ) : (
-                        <pre>{JSON.stringify(response, null, 2)}</pre>
+                        <div className="py-12 text-center text-savaari-gray opacity-50 italic text-sm">No body required for GET requests</div>
                       )}
-                    </div>
+                   </div>
+
+                   {/* Snippet Section */}
+                   <div className="space-y-6 flex flex-col">
+                      <div className="flex items-center justify-between h-5">
+                         <h4 className="text-xs font-bold text-savaari-gray uppercase tracking-widest border-b border-white/5 pb-2 mb-0">Code Snippet</h4>
+                         <button onClick={() => { navigator.clipboard.writeText(getCodeSnippet()); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="text-savaari-gray hover:text-white pb-3">
+                           {copied ? <CheckCircle2 size={16} className="text-savaari-green" /> : <Copy size={16} />}
+                         </button>
+                      </div>
+                      <div className="flex-1 bg-black rounded-2xl p-4 font-mono text-[11px] overflow-x-auto text-[#a9b1d6] border border-white/5 whitespace-pre">
+                         {getCodeSnippet()}
+                      </div>
+                   </div>
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-white/5 flex items-center justify-between">
+                   <div className="flex items-center gap-2 text-[10px] font-bold text-savaari-gray">
+                      <Database size={12} /> TARGET: http://localhost:3001
+                   </div>
+                   <PrimaryButton variant="accent" onClick={handleRun} disabled={running} className="px-10 py-3 flex items-center gap-2 shadow-lg shadow-savaari-accent/20">
+                      {running ? <div className="w-5 h-5 border-2 border-primary border-t-transparent animate-spin rounded-full" /> : <Send size={18} />}
+                      {running ? 'Executing...' : 'Run Request'}
+                   </PrimaryButton>
+                </div>
+              </GlassCard>
+
+              {/* Response Output */}
+              {(running || response) && (
+                <GlassCard className="p-8 bg-black/50 border-savaari-accent/20">
+                  <h4 className="text-xs font-bold text-savaari-accent uppercase tracking-widest mb-4">API Response</h4>
+                  <div className="bg-[#0B0B0C] rounded-xl p-4 font-mono text-[12px] text-savaari-green min-h-[150px] border border-savaari-accent/10 whitespace-pre">
+                    {running ? (
+                      <div className="flex items-center gap-3 animate-pulse">
+                         <div className="w-2 h-2 rounded-full bg-savaari-accent" />
+                         Processing request...
+                      </div>
+                    ) : (
+                      JSON.stringify(response, null, 2)
+                    )}
                   </div>
-                )}
-             </div>
+                </GlassCard>
+              )}
+            </div>
           </div>
         </div>
       </main>
