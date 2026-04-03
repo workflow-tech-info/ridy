@@ -26,6 +26,17 @@ export function Analytics() {
     return null;
   };
 
+  if (!stats?.trends?.rides || !stats?.trends?.revenue) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-200px)]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-savaari-accent border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-savaari-gray font-medium animate-pulse">Loading analytics data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8 pb-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -35,7 +46,7 @@ export function Analytics() {
         </div>
         <div className="flex bg-[#1c1c1e] p-1 rounded-xl border border-white/5">
            {['Day', 'Week', 'Month', 'Year'].map(t => (
-             <button key={t} className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${t === 'Week' ? 'bg-savaari-accent text-primary' : 'text-savaari-gray hover:text-white'}`}>{t}</button>
+             <button key={t} className={cn("px-4 py-1.5 rounded-lg text-xs font-bold transition-all", t === 'Week' ? 'bg-savaari-accent text-primary' : 'text-savaari-gray hover:text-white')}>{t}</button>
            ))}
         </div>
       </div>
@@ -43,8 +54,8 @@ export function Analytics() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Total Rides', value: '1,284', change: '+12.5%', isUp: true, icon: Calendar },
-          { label: 'Revenue', value: '₹4.2L', change: '+8.2%', isUp: true, icon: TrendingUp },
-          { label: 'Active Drivers', value: '84', change: '-2.4%', isUp: false, icon: Users },
+          { label: 'Revenue', value: stats.revenue || '₹0', change: '+8.2%', isUp: true, icon: TrendingUp },
+          { label: 'Active Drivers', value: stats.activeRideCount || 0, change: '-2.4%', isUp: false, icon: Users },
           { label: 'Avg. Wait', value: '2.4m', change: '-15.0%', isUp: true, icon: Clock },
         ].map((stat, i) => (
           <GlassCard key={i} className="p-6 border-white/5 bg-[#121214]/50">
