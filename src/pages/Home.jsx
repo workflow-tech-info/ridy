@@ -116,6 +116,118 @@ export function Home() {
         </div>
       </section>
 
+      {/* SECTION: RIDY EV FLEET - PRO MAX */}
+      <section className="py-40 relative bg-[#0B0B0C] border-t border-white/5 overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(circle_at_50%_0%,_rgba(0,240,255,0.05),transparent_70%)] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-24">
+             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md">
+               <span className="text-[10px] font-bold text-savaari-gray uppercase tracking-[0.2em]">Our Fleet</span>
+             </div>
+             <h2 className="text-5xl lg:text-7xl font-black text-white mb-8 tracking-[-0.03em]">The Premium EV Fleet</h2>
+             <p className="text-xl text-savaari-gray max-w-3xl mx-auto font-medium leading-relaxed">
+               Designed for performance. Engineered for delivery professionals. Choose the plan that fits your ambition.
+             </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Card 1: Rent-to-Own */}
+            <div className="flex flex-col bg-white/[0.02] backdrop-blur-2xl rounded-[2.5rem] border border-white/[0.05] p-10 hover:bg-white/[0.04] hover:border-savaari-accent/30 transition-all duration-500 group">
+              <div className="flex-1">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
+                   <span className="text-[10px] font-bold text-savaari-accent uppercase tracking-[0.2em]">Ridy Rent-to-Own</span>
+                </div>
+                <h3 className="text-3xl font-black text-white mb-4 tracking-tight leading-tight group-hover:text-savaari-accent transition-colors">Your Path to Ownership.</h3>
+                <p className="text-savaari-gray mb-10 font-medium leading-relaxed">
+                  Stop renting. Start owning. Transition from a pilot to an owner with our transparent 64-week ownership plan.
+                </p>
+                <div className="space-y-6">
+                  {[
+                    { title: "Zero Credit Checks", desc: "We believe in your potential, not your past." },
+                    { title: "64-Week Ownership", desc: "Clear, automated weekly payments that lead to full vehicle title transfer." },
+                    { title: "Premium Asset", desc: "Own the best-in-class ev scooters/bikes, built to last." },
+                    { title: "Included Maintenance", desc: "We keep your future asset in top shape until the final payment." }
+                  ].map((feature, i) => (
+                    <div key={i} className="flex gap-4">
+                       <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-savaari-accent/10 flex items-center justify-center text-savaari-accent">
+                          <CheckCircle2 size={14} />
+                       </div>
+                       <div>
+                         <h4 className="text-white font-bold mb-1 tracking-tight">{feature.title}</h4>
+                         <p className="text-sm text-savaari-gray leading-relaxed">{feature.desc}</p>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Pilot */}
+            <div className="flex flex-col bg-white/[0.02] backdrop-blur-2xl rounded-[2.5rem] border border-white/[0.05] p-10 hover:bg-white/[0.04] hover:border-[#FFBD2E]/30 transition-all duration-500 group shadow-[0_0_50px_rgba(255,189,46,0.03)] scale-100 lg:scale-[1.02] z-10 lg:-translate-y-4">
+              <div className="flex-1">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFBD2E]/10 border border-[#FFBD2E]/20 mb-8 backdrop-blur-md">
+                   <span className="text-[10px] font-bold text-[#FFBD2E] uppercase tracking-[0.2em]">Ridy Pilot</span>
+                </div>
+                <h3 className="text-3xl font-black text-white mb-4 tracking-tight leading-tight group-hover:text-[#FFBD2E] transition-colors">Empowering Kerala’s Delivery Force.</h3>
+                <p className="text-savaari-gray mb-10 font-medium leading-relaxed">
+                  The ultimate app for the modern delivery professional. Maximize earnings with zero fuel overhead.
+                </p>
+                <div className="space-y-6">
+                  {[
+                    { title: "Unlimited Free Charging", desc: "Access our growing network across Kerala. Charge for free, ride for profit." },
+                    { title: "Real-time Analytics", desc: "Track your earnings, battery health, and efficiency through our autoM8 powered dashboard." },
+                    { title: "24/7 Roadside Support", desc: "Never be stranded. Our team is a tap away, ensuring 100% uptime." },
+                    { title: "Performance Bonuses", desc: "Earn more as you ride more. Discounted rents for high-performing pilots." }
+                  ].map((feature, i) => (
+                    <div key={i} className="flex gap-4">
+                       <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-[#FFBD2E]/10 flex items-center justify-center text-[#FFBD2E]">
+                          <CheckCircle2 size={14} />
+                       </div>
+                       <div>
+                         <h4 className="text-white font-bold mb-1 tracking-tight">{feature.title}</h4>
+                         <p className="text-sm text-savaari-gray leading-relaxed">{feature.desc}</p>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Rental */}
+            <div className="flex flex-col bg-white/[0.02] backdrop-blur-2xl rounded-[2.5rem] border border-white/[0.05] p-10 hover:bg-white/[0.04] hover:border-[#27C93F]/30 transition-all duration-500 group">
+              <div className="flex-1">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#27C93F]/10 border border-[#27C93F]/20 mb-8 backdrop-blur-md">
+                   <span className="text-[10px] font-bold text-[#27C93F] uppercase tracking-[0.2em]">Ridy Rental</span>
+                </div>
+                <h3 className="text-3xl font-black text-white mb-4 tracking-tight leading-tight group-hover:text-[#27C93F] transition-colors">Premium Fleet. Flexible Terms.</h3>
+                <p className="text-savaari-gray mb-10 font-medium leading-relaxed">
+                  Access Kerala’s most powerful electric scooters starting at just ₹250/day.
+                </p>
+                <div className="space-y-6">
+                  {[
+                    { title: "The Premium Edge", desc: "Don't settle for low-speed mopeds. Ride high-range, high-torque vehicles designed for logistics." },
+                    { title: "Simple Onboarding", desc: "Deposit of ₹8,999 gets you on the road with insurance, helmet, and registration included." },
+                    { title: "No Fuel. No Maintenance", desc: "Focus on your deliveries; we handle the rest." },
+                    { title: "Hyper-Local Freedom", desc: "Perfectly suited for Swiggy, Zomato, Zepto, and Blinkit partners." }
+                  ].map((feature, i) => (
+                    <div key={i} className="flex gap-4">
+                       <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-[#27C93F]/10 flex items-center justify-center text-[#27C93F]">
+                          <CheckCircle2 size={14} />
+                       </div>
+                       <div>
+                         <h4 className="text-white font-bold mb-1 tracking-tight">{feature.title}</h4>
+                         <p className="text-sm text-savaari-gray leading-relaxed">{feature.desc}</p>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* SECTION: FOR PROVIDERS / FLEETS - PRO MAX */}
       <section id="business" className="py-40 relative bg-[#0B0B0C] border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
