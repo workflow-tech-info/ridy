@@ -2,6 +2,7 @@ import React from "react";
 import { Navigation } from "../components/ui/Navigation";
 import { Footer } from "../components/ui/Footer";
 import { GlassCard } from "../components/ui/GlassCard";
+import { JourneyConsole } from "../components/ui/JourneyConsole";
 import { 
   PhoneCall, CheckCircle2, ChevronRight, Car, UserCheck, Languages, 
   ArrowRight, Building, Siren, Map, Globe, UserPlus, PhoneIncoming, 
@@ -59,6 +60,7 @@ export function Home() {
         </div>
       </section>
 
+      <JourneyConsole />
 
       {/* WHY RIDY SECTION */}
       <section className="py-32 relative bg-black">
