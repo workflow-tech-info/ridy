@@ -54,9 +54,7 @@ export function Footer() {
         
         <div className="pt-8 border-t border-savaari-border flex flex-col md:flex-row items-center justify-between">
           <p className="text-savaari-gray text-xs">© {new Date().getFullYear()} Ridy Mobility. All rights reserved.</p>
-          <div className="text-savaari-gray text-xs mt-2 md:mt-0">
-            Apple-inspired design, built for India.
-          </div>
+
         </div>
       </div>
     </footer>

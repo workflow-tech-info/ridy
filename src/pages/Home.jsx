@@ -59,36 +59,6 @@ export function Home() {
         </div>
       </section>
 
-      {/* SEC 2: HOW IT WORKS - PRO MAX */}
-      <section id="how-it-works" className="py-40 relative bg-[#0B0B0C]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-           <div className="mb-24 text-center">
-             <h2 className="text-5xl lg:text-7xl font-black text-white mb-8 tracking-[-0.03em]">How it works</h2>
-             <p className="text-xl text-savaari-gray font-medium">Give a missed call. Get a ride. It's that simple.</p>
-           </div>
-           
-           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 relative">
-              <div className="hidden md:block absolute top-[70px] left-20 right-20 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              
-              {[
-                { title: "Missed Call", desc: "Give a missed call from any phone", icon: PhoneCall },
-                { title: "Instant Callback", desc: "We call you back in your language", icon: PhoneIncoming },
-                { title: "Tell Your Trip", desc: "Just say pickup and drop", icon: Languages },
-                { title: "Driver Assigned", desc: "Nearest driver accepts your ride", icon: UserCheck },
-                { title: "Ride Arrives", desc: "Driver calls you and reaches you", icon: Car }
-              ].map((step, i) => (
-                 <div key={i} className="relative flex flex-col items-center text-center group animate-in fade-in slide-in-from-bottom-8 duration-700" style={{ animationDelay: `${i * 100}ms` }}>
-                    <div className="w-20 h-20 rounded-3xl bg-[#1c1c1e] border border-white/10 flex items-center justify-center text-savaari-accent mb-8 relative z-10 transition-all group-hover:scale-110 group-hover:border-savaari-accent/50 shadow-2xl">
-                       <step.icon size={32} />
-                       <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white text-black font-black flex items-center justify-center text-sm">{i+1}</div>
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 tracking-tight">{step.title}</h3>
-                    <p className="text-sm text-savaari-gray px-4 leading-relaxed font-medium">{step.desc}</p>
-                 </div>
-              ))}
-           </div>
-        </div>
-      </section>
 
       {/* WHY RIDY SECTION */}
       <section className="py-32 relative bg-black">
@@ -102,7 +72,7 @@ export function Home() {
               { title: "No app needed", desc: "Works on any phone, including basic feature phones.", icon: Smartphone },
               { title: "No commissions", desc: "Drivers keep 100% of their earnings. No hidden fees.", icon: Zap },
               { title: "Open network", desc: "Multiple providers and fleets for maximum availability.", icon: Share2 },
-              { title: "Voice-first", desc: "Native local language support for inclusive access.", icon: Languages }
+              { title: "Voice-first", desc: "Give a missed call/text to toll-free number.", icon: Languages }
             ].map((point, i) => (
               <GlassCard key={i} className="p-8 border-white/5 bg-[#121214]">
                 <div className="w-12 h-12 rounded-2xl bg-savaari-accent/10 flex items-center justify-center text-savaari-accent mb-6">
@@ -296,45 +266,63 @@ export function Home() {
         </div>
       </section>
 
-      {/* SECTION: DEVELOPER / API - PRO MAX */}
-      <section className="py-40 relative bg-[#0B0B0C] border-y border-white/5">
+      {/* SECTION: DEVELOPER / API - JOURNEY FLOW */}
+      <section className="py-40 relative bg-[#0B0B0C] border-y border-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="bg-[#0B0B0C] border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl relative group">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-savaari-accent/5 blur-[100px] pointer-events-none group-hover:bg-savaari-accent/10 transition-all duration-700" />
-                <div className="bg-white/5 px-8 py-5 flex items-center justify-between border-b border-white/10">
-                   <div className="flex gap-2">
-                      <div className="w-3.5 h-3.5 rounded-full bg-[#FF5F56]" />
-                      <div className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E]" />
-                      <div className="w-3.5 h-3.5 rounded-full bg-[#27C93F]" />
-                   </div>
-                   <div className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">POST v1/dispatch</div>
+            <div className="order-2 lg:order-1 relative">
+              {/* Visual Flow Component */}
+              <div className="relative flex flex-col items-center gap-12 lg:gap-20">
+                {/* Step 1: Client App */}
+                <div className="relative z-10 w-full max-w-[280px] p-8 bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] border border-white/10 group animate-in fade-in slide-in-from-left-8 duration-700">
+                  <div className="w-12 h-12 rounded-2xl bg-savaari-accent/10 flex items-center justify-center text-savaari-accent mb-6 group-hover:scale-110 transition-transform">
+                    <Smartphone size={24} />
+                  </div>
+                  <h4 className="text-xl font-bold text-white mb-2">Client App</h4>
+                  <p className="text-sm text-savaari-gray leading-relaxed">Users request a ride via your app or website integration.</p>
                 </div>
-                <div className="p-12 font-mono text-base overflow-x-auto leading-relaxed">
-                   <p className="text-savaari-accent font-black mb-6 flex items-center gap-2"><ArrowRight size={16}/> POST /v1/dispatch</p>
-                   <p className="text-white/90">{"{"}</p>
-                   <p className="text-white/90 ml-8">"pickup": <span className="text-savaari-green">"Kochi Airport"</span>,</p>
-                   <p className="text-white/90 ml-8">"drop": <span className="text-savaari-green">"Kakkanad"</span>,</p>
-                   <p className="text-white/90 ml-8">"user_phone": <span className="text-savaari-green">"+91 8086477654"</span>,</p>
-                   <p className="text-white/90 ml-8">"fare": <span className="text-savaari-accent">"Dynamic (Est. ₹450)"</span>,</p>
-                   <p className="text-white/90 ml-8">"vehicleType": <span className="text-savaari-green">"Auto"</span></p>
-                   <p className="text-white/90">{"}"}</p>
+
+                {/* Vertical Connector Line (Mobile/Desktop) */}
+                <div className="absolute top-[120px] left-1/2 -translate-x-1/2 w-px h-[calc(100%-240px)] bg-gradient-to-b from-savaari-accent/50 via-savaari-accent/20 to-transparent" />
+                
+                {/* Step 2: Ridy Cloud API */}
+                <div className="relative z-10 w-full max-w-[280px] p-8 bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] border border-white/10 group animate-in fade-in slide-in-from-right-8 duration-700 delay-200">
+                  <div className="w-12 h-12 rounded-2xl bg-savaari-accent/10 flex items-center justify-center text-savaari-accent mb-6 group-hover:scale-110 transition-transform">
+                    <Cpu size={24} />
+                  </div>
+                  <h4 className="text-xl font-bold text-white mb-2">Ridy API</h4>
+                  <p className="text-sm text-savaari-gray leading-relaxed">Our gateway processes the request and matches the nearest fleet.</p>
                 </div>
+
+                {/* Step 3: Ride Confirmation */}
+                <div className="relative z-10 w-full max-w-[280px] p-8 bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] border border-white/10 group animate-in fade-in slide-in-from-left-8 duration-700 delay-400">
+                  <div className="w-12 h-12 rounded-2xl bg-savaari-green/10 flex items-center justify-center text-savaari-green mb-6 group-hover:scale-110 transition-transform">
+                    <CheckCircle2 size={24} />
+                  </div>
+                  <h4 className="text-xl font-bold text-white mb-2">Confirmation</h4>
+                  <p className="text-sm text-savaari-gray leading-relaxed">Instant ride assignment and status updates sent back to your user.</p>
+                </div>
+
+                {/* Pulse Glow Effect behind Step 2 */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-savaari-accent/5 blur-[100px] pointer-events-none rounded-full" />
               </div>
             </div>
+
             <div className="order-1 lg:order-2">
               <div className="w-20 h-20 rounded-3xl bg-savaari-accent/10 flex items-center justify-center text-savaari-accent mb-10 shadow-lg glow-pro">
-                <Code size={40} />
+                <Globe size={40} />
               </div>
               <h2 className="text-5xl lg:text-7xl font-black text-white mb-8 tracking-[-0.03em] leading-tight">Build on Ridy</h2>
               <p className="text-xl text-savaari-gray mb-12 font-medium leading-relaxed">
-                Developers can integrate ride booking directly into their apps, websites, or systems using our simple, powerful REST APIs.
+                Connect your business to India's open mobility network. Our REST API handles the complexity of dispatch, payments, and fleet management.
               </p>
-              <div className="flex gap-6">
-                <Link to="/api-docs" className="px-12 py-6 bg-savaari-accent text-primary font-black rounded-full hover:shadow-[0_0_50px_rgba(0,240,255,0.4)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row gap-6">
+                <Link to="/api-docs" className="px-12 py-6 bg-savaari-accent text-primary font-black rounded-full hover:shadow-[0_0_50px_rgba(0,240,255,0.4)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
                    <Zap size={20} /> Try API Playground
                 </Link>
+                <a href="#business" className="px-10 py-6 bg-white/5 text-white font-bold rounded-full border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all text-center">
+                  Registration Guide
+                </a>
               </div>
             </div>
           </div>
